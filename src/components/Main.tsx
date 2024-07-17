@@ -5,8 +5,8 @@ const Main = () => {
     return (
         <>
             <Navbar/>
-            <div className="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
-                <h1 className="text-4xl font-bold mb-8">ERP Main Menu</h1>
+            <div className="bg-gray-100 min-h-screen flex flex-col items-center ">
+                <h1 className="text-4xl font-bold m-5">ERP Main Menu</h1>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center hover:scale-125 hover:shadow-2xl transition">
                         <FaUser size={25} />
