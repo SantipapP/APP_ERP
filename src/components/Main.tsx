@@ -1,5 +1,6 @@
 import { FaUser } from "react-icons/fa";
 import { FaComputer } from "react-icons/fa6";
+import { BiSolidPurchaseTag } from "react-icons/bi";
 import Navbar from "./Navbar";
 const Main = () => {
     return (
@@ -25,7 +26,7 @@ const Main = () => {
                         </button>
                     </div>
                     <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center hover:scale-125 hover:shadow-2xl transition">
-                        <FaComputer size={25} />
+                        <BiSolidPurchaseTag size={25} />
                         <h2 className="text-2xl font-semibold mb-4">PU</h2>
                         <p className="text-gray-600 mb-4">Purchasing</p>
                         <button className="bg-purple-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-purple-600 transition">
