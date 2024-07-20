@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "xt3JqpLu82aqzVbfIy9QB3JLPPOfAMGXO7dOvVgzPo0=",
+  "Source": "ERP_Service",
+  "BasePath": "_content/ERP_Service",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
