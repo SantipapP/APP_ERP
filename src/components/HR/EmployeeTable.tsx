@@ -1,17 +1,14 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-
 interface Employee {
     EMP_ID: string;
     EMP_FirstName: string;
-    EMP_LastName:string;
+    EMP_LastName: string;
     EMP_Position: string;
     EMP_DepartmentID: string;
     EMP_Status: string;
 }
-
-
 
 const EmployeeTable = () => {
     const [employees, setEmployees] = useState<Employee[]>([]);
@@ -44,28 +41,30 @@ const EmployeeTable = () => {
     return (
         <>
             <div className="container mx-auto px-4">
-                <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
-                    <thead className="bg-gray-50">
-                        <tr>
-                            <th className="px-6 py-4 font-medium text-gray-900">ID</th>
-                            <th className="px-6 py-4 font-medium text-gray-900">Name</th>
-                            <th className="px-6 py-4 font-medium text-gray-900">Position</th>
-                            <th className="px-6 py-4 font-medium text-gray-900">Department</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {employees.map((employee) => (
-                            <tr key={employee.EMP_ID}>
-                                <td className="py-2 px-4 border-b">{employee.EMP_ID}</td>
-                                <td className="py-2 px-4 border-b">{employee.EMP_FirstName} {employee.EMP_LastName}</td>
-                                <td className="py-2 px-4 border-b">{employee.EMP_Position}</td>
-                                <td className="py-2 px-4 border-b">{employee.EMP_DepartmentID}</td>
+                <div className="overflow-x-auto">
+                    <table className="min-w-full border-collapse bg-white text-left text-sm text-gray-500">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-6 py-4 font-medium text-gray-900">ID</th>
+                                <th className="px-6 py-4 font-medium text-gray-900">Name</th>
+                                <th className="px-6 py-4 font-medium text-gray-900">Position</th>
+                                <th className="px-6 py-4 font-medium text-gray-900">Department</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {employees.map((employee) => (
+                                <tr key={employee.EMP_ID}>
+                                    <td className="py-2 px-4 border-b">{employee.EMP_ID}</td>
+                                    <td className="py-2 px-4 border-b">{employee.EMP_FirstName} {employee.EMP_LastName}</td>
+                                    <td className="py-2 px-4 border-b">{employee.EMP_Position}</td>
+                                    <td className="py-2 px-4 border-b">{employee.EMP_DepartmentID}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </>
-    )
+    );
 }
-export default EmployeeTable
+export default EmployeeTable;
