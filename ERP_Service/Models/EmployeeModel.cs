@@ -1,5 +1,5 @@
 using System;
-namespace ERP_Service
+namespace ERP_Service.Models
 {
     public class EmployeeModel
     {
@@ -15,8 +15,10 @@ namespace ERP_Service
         public string? EMP_Email {get; set;}
         public string? EMP_Phone {get; set;}
         public string? EMP_Address {get; set;}
+        public string? EMP_City {get; set;}
         public string? EMP_State {get; set;}
         public string? EMP_ZipCode {get; set;}
         public string? EMP_Country {get; set;}
+        public string? EMP_Password {get; set;}
     }
 }

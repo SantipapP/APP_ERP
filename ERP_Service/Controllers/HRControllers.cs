@@ -22,7 +22,7 @@ namespace ERP_Service
         {
             DataTable profile_dt = new DataTable();
 
-            string query = @"SELECT * FROM TBL_Employee";
+            string query = @"EXEC SP_allEmp";
             string connnectstr = _configuration.GetConnectionString("ERPDB");
 
             // Connect DB ( SQL Server)
@@ -114,9 +114,11 @@ namespace ERP_Service
                         custProfile.Parameters.AddWithValue("@EMP_Email", us.EMP_Email);
                         custProfile.Parameters.AddWithValue("@EMP_Phone", us.EMP_Phone);
                         custProfile.Parameters.AddWithValue("@EMP_Address", us.EMP_Address);
+                        custProfile.Parameters.AddWithValue("@EMP_City", us.EMP_City);
                         custProfile.Parameters.AddWithValue("@EMP_State", us.EMP_State);
                         custProfile.Parameters.AddWithValue("@EMP_ZipCode", us.EMP_ZipCode);
                         custProfile.Parameters.AddWithValue("@EMP_Country", us.EMP_Country);
+                        custProfile.Parameters.AddWithValue("@EMP_Password", us.EMP_Password);
                         checkProfile = custProfile.ExecuteReader();
                         profile_dt.Load(checkProfile);
                         checkProfile.Close();

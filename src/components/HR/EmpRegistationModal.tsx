@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-
+import Swal from 'sweetalert2';
+import CryptoJS from 'crypto-js';
 interface Department {
     DEP_DepartmentID: string;
     DEP_DepartmentName: string;
@@ -8,13 +9,13 @@ interface Department {
 
 
 const EmpRegistationModal = () => {
-    const [EMP_ID, setEMP_ID] = useState('')
+    const [EMP_ID, setEMP_ID] = useState(new Date().getFullYear().toString())
     const [EMP_FirstName, setEMP_FirstName] = useState('')
     const [EMP_LastName, setEMP_LastName] = useState('')
     const [EMP_DateOfBirth, setEMP_DateOfBirth] = useState('')
     const [EMP_Gender, setEMP_Gender] = useState('')
     const [EMP_HireDate, setEMP_HireDate] = useState('')
-    const [EMP_DepartmentID, setEMP_DepartmentID] = useState('')
+    // const [EMP_DepartmentID, setEMP_DepartmentID] = useState('')
     const [EMP_Position, setEMP_Position] = useState('')
     const [EMP_Salary, setEMP_Salary] = useState('')
     const [EMP_Email, setEMP_Email] = useState('')
@@ -43,35 +44,75 @@ const EmpRegistationModal = () => {
 
     const SubmitRegistation = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const EMP_Password = CryptoJS.SHA256("P@ssw0rd").toString();
+
         const selectedDepartmentID = departmentRef.current?.value || '';
-        setEMP_DepartmentID(selectedDepartmentID);
+        console.log(selectedDepartmentID)
 
-        const RegistationData = [{
-            "EMP_ID":EMP_ID,
-            "EMP_FirstName":EMP_FirstName,
-            "EMP_LastName":EMP_LastName,
-            "EMP_DateOfBirth":EMP_DateOfBirth,
-            "EMP_Gender":EMP_Gender,
-            "EMP_HireDate":EMP_HireDate,
-            "EMP_DepartmentID":EMP_DepartmentID,
-            "EMP_Position":EMP_Position,
-            "EMP_Salary":EMP_Salary,
-            "EMP_Email":EMP_Email,
-            "EMP_Phone":EMP_Phone,
-            "EMP_Address":EMP_Address,
-            "EMP_City":EMP_City,
-            "EMP_State":EMP_State,
-            "EMP_ZipCode":EMP_ZipCode,
-            "EMP_Country":EMP_Country
-        }]
-
-        console.log(RegistationData)
-        // console.log(EMP_ID, EMP_FirstName, EMP_LastName, EMP_DateOfBirth, EMP_Gender, EMP_HireDate, EMP_DepartmentID, EMP_Position, EMP_Salary, EMP_Email, EMP_Phone, EMP_Address, EMP_City, EMP_State, EMP_ZipCode, EMP_Country)
+        try {
+            const RegistationResponse = await axios.post('http://localhost:5196/HRControllers/RegistationEmp', {
+                "EMP_ID": EMP_ID,
+                "EMP_FirstName": EMP_FirstName,
+                "EMP_LastName": EMP_LastName,
+                "EMP_DateOfBirth": EMP_DateOfBirth,
+                "EMP_Gender": EMP_Gender,
+                "EMP_HireDate": EMP_HireDate,
+                "EMP_DepartmentID": selectedDepartmentID,
+                "EMP_Position": EMP_Position,
+                "EMP_Salary": EMP_Salary,
+                "EMP_Email": EMP_Email,
+                "EMP_Phone": EMP_Phone,
+                "EMP_Address": EMP_Address,
+                "EMP_City": EMP_City,
+                "EMP_State": EMP_State,
+                "EMP_ZipCode": EMP_ZipCode,
+                "EMP_Country": EMP_Country,
+                "EMP_Password": EMP_Password
+            }, {
+                validateStatus: function (status) {
+                    return status < 500; // จะไม่ throw error สำหรับ status ที่มากกว่าหรือเท่ากับ 500
+                }
+            });
+            if (RegistationResponse.status === 200) {
+                handleClose()
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Registation successfully',
+                    text: 'Page will reload after success',
+                    willClose: () => {
+                        window.location.reload(); // รีโหลดหน้าเว็บหลังจากแสดงข้อความสำเร็จ
+                    }
+                });
+            }else{
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',            
+                });
+            }
+            console.log(RegistationResponse)
+        } catch (error) {
+            console.error('Error during login:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+            });
+        }
     }
+
+    const dialogRef = useRef<HTMLDialogElement>(null);
+
+    const handleClose = () => {
+        if (dialogRef.current) {
+            dialogRef.current.close();
+        }
+    };
     return (
         <>
             {/*------------------------ Employee registration form modal-------------------------------------- */}
-            <dialog id="Employee_Form_Modal" className="modal">
+            <dialog id="Employee_Form_Modal" className="modal" ref={dialogRef}>
                 <div className="modal-box w-full max-w-5xl p-6 bg-white rounded-lg shadow-md">
                     <h3 className="font-bold text-2xl mb-6 text-center">Employee Registration Form</h3>
                     <form onSubmit={SubmitRegistation}>
@@ -96,7 +137,7 @@ const EmpRegistationModal = () => {
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Gender</label>
-                                <select className="select select-bordered w-full" value={EMP_Gender} onChange={(e) => setEMP_Gender(e.target.value)} defaultValue="" required>
+                                <select className="select select-bordered w-full" value={EMP_Gender} onChange={(e) => setEMP_Gender(e.target.value)} required>
                                     <option value="">Select Gender</option>
                                     <option value="Male">Male</option>
                                     <option value="Female">Female</option>
@@ -118,7 +159,7 @@ const EmpRegistationModal = () => {
                                 <select className="select select-bordered w-full" defaultValue="" ref={departmentRef} required>
                                     <option value="">Select Department</option>
                                     {departments.map((dept) => (
-                                        <option key={dept.DEP_DepartmentID} value={dept.DEP_DepartmentID}>{dept.DEP_DepartmentName}</option>
+                                        <option key={dept.DEP_DepartmentID} value={dept.DEP_DepartmentID}>{dept.DEP_DepartmentID}|{dept.DEP_DepartmentName}</option>
                                     ))}
                                 </select>
                             </div>
@@ -161,7 +202,7 @@ const EmpRegistationModal = () => {
                         </div>
                         <div className="modal-action flex justify-end">
                             <button type="submit" className="btn btn-primary">Save</button>
-                            <button type="button" className="btn btn-secondary ml-2">Close</button>
+                            <button type="button" className="btn btn-secondary ml-2" onClick={handleClose}>Close</button>
                         </div>
                     </form>
                 </div>
