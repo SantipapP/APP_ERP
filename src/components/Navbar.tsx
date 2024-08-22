@@ -1,38 +1,51 @@
 import { useNavigate } from "react-router-dom";
+import useLocalStorage from "../hooks/useLocalStorage";
+import { CiBoxList } from "react-icons/ci";
+import { IoIosLogOut,IoIosHome  } from "react-icons/io";
+import Swal from 'sweetalert2';
 const Navbar = () => {
     const navigate = useNavigate();
+    const [StorageUsers] = useLocalStorage('userData', []);
+
+    const Logout = () => {
+        Swal.fire({
+            title: "Are you sure you want to log out?",
+            showCancelButton: true,
+            confirmButtonText: "Yes"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                localStorage.clear();
+                navigate("/");
+            }
+        });
+
+    }
     return (
         <>
-            <header className="bg-gray-800">
-                <nav className="container mx-auto px-3 py-3">
-                    <div className="flex items-center justify-between">
-                        <div className="text-white font-bold text-xl">
-                            <a href="#" onClick={() => navigate("/Main")}>Cybernetics System Technology</a>
+            <div className="navbar bg-base-100 bg-gray-300 overflow-visible">
+                <div className="navbar-start">
+                    <div className="dropdown relative">
+                        <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+                            <CiBoxList size={30} />
                         </div>
-                        <div className="hidden md:block">
-                            <ul className="flex items-center space-x-8">
-                                <li><a onClick={() => navigate("/Main")} className="text-white cursor-pointer">Home</a></li>
-                            </ul>
-                        </div>
-                        <div className="md:hidden">
-                            <button className="outline-none mobile-menu-button">
-                                <svg className="w-6 h-6 text-white" x-show="!showMenu" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path d="M4 6h16M4 12h16M4 18h16"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                    <div className="mobile-menu hidden md:hidden">
-                        <ul className="mt-4 space-y-4">
-                            <li><a href="#" className="block px-4 py-2 text-white bg-gray-900 rounded">Home</a></li>
-                            <li><a href="#" className="block px-4 py-2 text-white bg-gray-900 rounded">About</a></li>
-                            <li><a href="#" className="block px-4 py-2 text-white bg-gray-900 rounded">Services</a></li>
-                            <li><a href="#" className="block px-4 py-2 text-white bg-gray-900 rounded">Contact</a></li>
+                        <ul
+                            tabIndex={0}
+                            className="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-52 p-2 shadow">
                         </ul>
                     </div>
+                    <a className="btn btn-ghost text-xl hidden sm:flex">{StorageUsers[0].EMP_FirstName} {StorageUsers[0].EMP_LastName}</a>
+                </div>
+                <div className="navbar-center hidden lg:flex">
+                    <ul className="menu menu-horizontal px-1">
 
-                </nav>
-            </header>
+                    </ul>
+
+                </div>
+                <div className="navbar-end">
+                    <a className="btn mr-1" onClick={()=>navigate('/Main')}><IoIosHome size={25} /></a>
+                    <a className="btn mr-1" onClick={Logout}><IoIosLogOut size={25} /></a>
+                </div>
+            </div>
         </>
     )
 }

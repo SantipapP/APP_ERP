@@ -20,23 +20,23 @@ namespace ERP_Service
         [HttpGet("allEmp")]
         public IActionResult allEmp()
         {
-            DataTable profile_dt = new DataTable();
+            DataTable Stroed_dt = new DataTable();
 
             string query = @"EXEC SP_allEmp";
             string connnectstr = _configuration.GetConnectionString("ERPDB");
 
             // Connect DB ( SQL Server)
-            SqlDataReader checkProfile;
+            SqlDataReader checkStroed;
 
             using (SqlConnection con = new SqlConnection(connnectstr))
             {
                 con.Open();
-                using (SqlCommand custProfile = new SqlCommand(query, con))
+                using (SqlCommand StroedQuery = new SqlCommand(query, con))
                 {
-                    //    custProfile.CommandType = CommandType.StoredProcedure;   กรณีใช้ StoredProcedure
-                    checkProfile = custProfile.ExecuteReader();
-                    profile_dt.Load(checkProfile);
-                    checkProfile.Close();
+                    //    StroedQuery.CommandType = CommandType.StoredProcedure;   กรณีใช้ StoredProcedure
+                    checkStroed = StroedQuery.ExecuteReader();
+                    Stroed_dt.Load(checkStroed);
+                    checkStroed.Close();
                 }
                 con.Close();
 
@@ -44,7 +44,7 @@ namespace ERP_Service
             // Convert to Json
             string JSONresult;
 
-            JSONresult = JsonConvert.SerializeObject(profile_dt);
+            JSONresult = JsonConvert.SerializeObject(Stroed_dt);
 
             return Ok(JSONresult);
             //return Ok(new {message = query.ToString()});
@@ -53,23 +53,23 @@ namespace ERP_Service
         [HttpGet("allDept")]
         public IActionResult allDept()
         {
-            DataTable profile_dt = new DataTable();
+            DataTable Stroed_dt = new DataTable();
 
             string query = @"SELECT * FROM TBL_Department";
             string connnectstr = _configuration.GetConnectionString("ERPDB");
 
             // Connect DB ( SQL Server)
-            SqlDataReader checkProfile;
+            SqlDataReader checkStroed;
 
             using (SqlConnection con = new SqlConnection(connnectstr))
             {
                 con.Open();
-                using (SqlCommand custProfile = new SqlCommand(query, con))
+                using (SqlCommand StroedQuery = new SqlCommand(query, con))
                 {
-                    //    custProfile.CommandType = CommandType.StoredProcedure;   กรณีใช้ StoredProcedure
-                    checkProfile = custProfile.ExecuteReader();
-                    profile_dt.Load(checkProfile);
-                    checkProfile.Close();
+                    //    StroedQuery.CommandType = CommandType.StoredProcedure;   กรณีใช้ StoredProcedure
+                    checkStroed = StroedQuery.ExecuteReader();
+                    Stroed_dt.Load(checkStroed);
+                    checkStroed.Close();
                 }
                 con.Close();
 
@@ -77,16 +77,49 @@ namespace ERP_Service
             // Convert to Json
             string JSONresult;
 
-            JSONresult = JsonConvert.SerializeObject(profile_dt);
+            JSONresult = JsonConvert.SerializeObject(Stroed_dt);
+
+            return Ok(JSONresult);
+            //return Ok(new {message = query.ToString()});
+        }
+
+        [HttpGet("NextEmpID")]
+        public IActionResult NextEmpID()
+        {
+            DataTable Stroed_dt = new DataTable();
+
+            string query = @"SELECT TOP 1 RIGHT('0000' + CAST(CAST(SUBSTRING(EMP_ID, 5, 4) AS INT) + 1 AS VARCHAR(4)), 4) as Next_ID FROM TBL_Employee te ORDER BY EMP_ID DESC;";
+            string connnectstr = _configuration.GetConnectionString("ERPDB");
+
+            // Connect DB ( SQL Server)
+            SqlDataReader checkStroed;
+
+            using (SqlConnection con = new SqlConnection(connnectstr))
+            {
+                con.Open();
+                using (SqlCommand StroedQuery = new SqlCommand(query, con))
+                {
+                    //    StroedQuery.CommandType = CommandType.StoredProcedure;   กรณีใช้ StoredProcedure
+                    checkStroed = StroedQuery.ExecuteReader();
+                    Stroed_dt.Load(checkStroed);
+                    checkStroed.Close();
+                }
+                con.Close();
+
+            }
+            // Convert to Json
+            string JSONresult;
+
+            JSONresult = JsonConvert.SerializeObject(Stroed_dt);
 
             return Ok(JSONresult);
             //return Ok(new {message = query.ToString()});
         }
 
         [HttpPost("RegistationEmp")]
-        public IActionResult RegistationEmp(EmployeeModel us)
+        public IActionResult RegistationEmp(EmployeeModel em)
         {
-            DataTable profile_dt = new DataTable();
+            DataTable List_dt = new DataTable();
 
             DateTime current_tm = DateTime.Now;
 
@@ -94,48 +127,46 @@ namespace ERP_Service
             string connnectstr = _configuration.GetConnectionString("ERPDB");
             try
             {// Connect DB ( SQL Server)
-                SqlDataReader checkProfile;
+                SqlDataReader checkStored;
 
                 using (SqlConnection con = new SqlConnection(connnectstr))
                 {
                     con.Open();
-                    using (SqlCommand custProfile = new SqlCommand(query, con))
+                    using (SqlCommand Stored = new SqlCommand(query, con))
                     {
-                        custProfile.CommandType = CommandType.StoredProcedure;
-                        custProfile.Parameters.AddWithValue("@EMP_ID", us.EMP_ID);
-                        custProfile.Parameters.AddWithValue("@EMP_FirstName", us.EMP_FirstName);
-                        custProfile.Parameters.AddWithValue("@EMP_LastName", us.EMP_LastName);
-                        custProfile.Parameters.AddWithValue("@EMP_DateOfBirth", us.EMP_DateOfBirth);
-                        custProfile.Parameters.AddWithValue("@EMP_Gender", us.EMP_Gender);
-                        custProfile.Parameters.AddWithValue("@EMP_HireDate", us.EMP_HireDate);
-                        custProfile.Parameters.AddWithValue("@EMP_Position", us.EMP_Position);
-                        custProfile.Parameters.AddWithValue("@EMP_DepartmentID", us.EMP_DepartmentID);
-                        custProfile.Parameters.AddWithValue("@EMP_Salary", us.EMP_Salary);
-                        custProfile.Parameters.AddWithValue("@EMP_Email", us.EMP_Email);
-                        custProfile.Parameters.AddWithValue("@EMP_Phone", us.EMP_Phone);
-                        custProfile.Parameters.AddWithValue("@EMP_Address", us.EMP_Address);
-                        custProfile.Parameters.AddWithValue("@EMP_City", us.EMP_City);
-                        custProfile.Parameters.AddWithValue("@EMP_State", us.EMP_State);
-                        custProfile.Parameters.AddWithValue("@EMP_ZipCode", us.EMP_ZipCode);
-                        custProfile.Parameters.AddWithValue("@EMP_Country", us.EMP_Country);
-                        custProfile.Parameters.AddWithValue("@EMP_Password", us.EMP_Password);
-                        checkProfile = custProfile.ExecuteReader();
-                        profile_dt.Load(checkProfile);
-                        checkProfile.Close();
+                        Stored.CommandType = CommandType.StoredProcedure;
+                        Stored.Parameters.AddWithValue("@EMP_ID", em.EMP_ID);
+                        Stored.Parameters.AddWithValue("@EMP_FirstName", em.EMP_FirstName);
+                        Stored.Parameters.AddWithValue("@EMP_LastName", em.EMP_LastName);
+                        Stored.Parameters.AddWithValue("@EMP_DateOfBirth", em.EMP_DateOfBirth);
+                        Stored.Parameters.AddWithValue("@EMP_Gender", em.EMP_Gender);
+                        Stored.Parameters.AddWithValue("@EMP_HireDate", em.EMP_HireDate);
+                        Stored.Parameters.AddWithValue("@EMP_Position", em.EMP_Position);
+                        Stored.Parameters.AddWithValue("@EMP_DepartmentID", em.EMP_DepartmentID);
+                        Stored.Parameters.AddWithValue("@EMP_Salary", em.EMP_Salary);
+                        Stored.Parameters.AddWithValue("@EMP_Email", em.EMP_Email);
+                        Stored.Parameters.AddWithValue("@EMP_Phone", em.EMP_Phone);
+                        Stored.Parameters.AddWithValue("@EMP_Address", em.EMP_Address);
+                        Stored.Parameters.AddWithValue("@EMP_City", em.EMP_City);
+                        Stored.Parameters.AddWithValue("@EMP_State", em.EMP_State);
+                        Stored.Parameters.AddWithValue("@EMP_ZipCode", em.EMP_ZipCode);
+                        Stored.Parameters.AddWithValue("@EMP_Country", em.EMP_Country);
+                        Stored.Parameters.AddWithValue("@EMP_Password", em.EMP_Password);
+                        checkStored = Stored.ExecuteReader();
+                        List_dt.Load(checkStored);
+                        checkStored.Close();
                     }
                     con.Close();
 
                 }
-                // Convert to Json
-                // string JSONresult;
-                //JSONresult = JsonConvert.SerializeObject(profile_dt);
+
                 return Ok(new { message = "OK" });
             }
             catch (Exception ex)
             {
                 return Ok(new { message = ex.Message.ToString() });
             }
-            //return Ok(new {message = query.ToString()});
+
         }
     }
 }

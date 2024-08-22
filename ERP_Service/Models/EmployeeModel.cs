@@ -20,5 +20,6 @@ namespace ERP_Service.Models
         public string? EMP_ZipCode {get; set;}
         public string? EMP_Country {get; set;}
         public string? EMP_Password {get; set;}
+        public string? EMP_IsChangePass {get; set;}
     }
 }
