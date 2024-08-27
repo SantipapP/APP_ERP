@@ -42,7 +42,7 @@ const Navbar = () => {
 
                 </div>
                 <div className="navbar-end">
-                    <a className="btn mr-1" onClick={()=>navigate('/Main')}><IoIosHome size={25} /></a>
+                    <a className="btn mr-1" onClick={()=>navigate('/Home')}><IoIosHome size={25} /></a>
                     <a className="btn mr-1" onClick={Logout}><IoIosLogOut size={25} /></a>
                 </div>
             </div>

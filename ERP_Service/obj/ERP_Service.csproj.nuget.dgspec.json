@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Personal_Project\\APP_ERP\\ERP_SERVICE\\ERP_Service.csproj": {}
+    "D:\\Personal_Project\\APP_ERP\\ERP_Service\\ERP_Service.csproj": {}
   },
   "projects": {
-    "D:\\Personal_Project\\APP_ERP\\ERP_SERVICE\\ERP_Service.csproj": {
+    "D:\\Personal_Project\\APP_ERP\\ERP_Service\\ERP_Service.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Personal_Project\\APP_ERP\\ERP_SERVICE\\ERP_Service.csproj",
+        "projectUniqueName": "D:\\Personal_Project\\APP_ERP\\ERP_Service\\ERP_Service.csproj",
         "projectName": "ERP_Service",
-        "projectPath": "D:\\Personal_Project\\APP_ERP\\ERP_SERVICE\\ERP_Service.csproj",
+        "projectPath": "D:\\Personal_Project\\APP_ERP\\ERP_Service\\ERP_Service.csproj",
         "packagesPath": "C:\\Users\\psantipap\\.nuget\\packages\\",
-        "outputPath": "D:\\Personal_Project\\APP_ERP\\ERP_SERVICE\\obj\\",
+        "outputPath": "D:\\Personal_Project\\APP_ERP\\ERP_Service\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\psantipap\\AppData\\Roaming\\NuGet\\NuGet.Config"

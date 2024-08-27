@@ -5,7 +5,7 @@ import { BiSolidPurchaseTag } from "react-icons/bi";
 import { MdAccountBalanceWallet } from "react-icons/md";
 import { IoIosCash } from "react-icons/io";
 import Navbar from "../components/Navbar";
-const Main = () => {
+const Home = () => {
     const navigate = useNavigate();
     return (
         <>
@@ -58,4 +58,4 @@ const Main = () => {
         </>
     )
 }
-export default Main
+export default Home
